@@ -21,10 +21,14 @@ const dataSchema = new mongoose.Schema({
     required: true,
     type: String,
   },
-  // img: {
-  //   required: true,
-  //   type: String,
-  // },
+  tech: {
+    required: true,
+    type: String,
+  },
+  image: {
+    required: true,
+    type: String,
+  },
 })
 
 module.exports = mongoose.model('Data', dataSchema)

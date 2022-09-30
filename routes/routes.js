@@ -2,23 +2,43 @@ const express = require('express')
 const Model = require('../model/model')
 const router = express.Router()
 
-//Post Method
-router.post('/post', async (req, res) => {
-  const data = await new Model({
-    title: req.body.title,
-    briefDesc: req.body.briefDesc,
-    resultDesc: req.body.resultDesc,
-    github: req.body.github,
-    demoLink: req.body.demoLink,
-    //image: req.file.path,
-  })
+var fs = require('fs')
+var path = require('path')
+var multer = require('multer')
+var cloudinary = require('cloudinary').v2
+require('dotenv/config')
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+})
 
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now())
+  },
+})
+var upload = multer({ storage: storage })
+
+//Post Method
+router.post('/post', upload.single('image'), async (req, res) => {
   try {
-    const dataToSave = data.save()
-    res.status(200).json(dataToSave)
-  } catch (error) {
-    res.status(400).json({ message: error.message })
-  }
+    const result = await cloudinary.uploader.upload(req.file.path)
+    const data = new Model({
+      title: req.body.title,
+      briefDesc: req.body.briefDesc,
+      resultDesc: req.body.resultDesc,
+      github: req.body.github,
+      demoLink: req.body.demoLink,
+      tech: req.body.tech,
+      image: result.secure_url,
+    })
+    await data.save()
+    res.json(data)
+  } catch (error) {}
 })
 
 //Get all Method
