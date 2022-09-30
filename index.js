@@ -27,6 +27,7 @@ database.once('connected', () => {
 app.use(express.json())
 app.use('/api', routes)
 
-app.listen(8000, () => {
-  console.log(`Server Started at ${8000}`)
+app.listen(process.env.PORT || 8000, (err) => {
+  if (err) throw err
+  console.log('Server started')
 })
