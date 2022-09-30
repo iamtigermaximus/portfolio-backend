@@ -23,6 +23,16 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage })
 
+router.get('/', (req, res) => {
+  Model.find({}, (err, items) => {
+    if (err) {
+      console.log(err)
+    } else {
+      res.json({ items: items })
+    }
+  })
+})
+
 //Post Method
 // localhost:8000/api/post
 router.post('/post', upload.single('image'), async (req, res) => {

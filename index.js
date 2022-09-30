@@ -25,7 +25,7 @@ database.once('connected', () => {
 })
 
 app.use(express.json())
-app.use('/api', routes)
+app.use('/', routes)
 
 app.listen(process.env.PORT || 8000, (err) => {
   if (err) throw err
