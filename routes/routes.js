@@ -24,6 +24,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 //Post Method
+// localhost:8000/api/post
 router.post('/post', upload.single('image'), async (req, res) => {
   try {
     const result = await cloudinary.uploader.upload(req.file.path)
@@ -42,6 +43,8 @@ router.post('/post', upload.single('image'), async (req, res) => {
 })
 
 //Get all Method
+// localhost:8000/api/getAll
+
 router.get('/getAll', async (req, res) => {
   try {
     const data = await Model.find()
@@ -52,6 +55,8 @@ router.get('/getAll', async (req, res) => {
 })
 
 //Get by ID Method
+// localhost:8000/api/getOne/:id
+
 router.get('/getOne/:id', async (req, res) => {
   try {
     const data = await Model.findById(req.params.id)
@@ -62,6 +67,8 @@ router.get('/getOne/:id', async (req, res) => {
 })
 
 //Update by ID Method
+// localhost:8000/api/update/:id
+
 router.patch('/update/:id', async (req, res) => {
   try {
     const id = req.params.id
@@ -77,6 +84,8 @@ router.patch('/update/:id', async (req, res) => {
 })
 
 //Delete by ID Method
+// localhost:8000/api/delete/:id
+
 router.delete('/delete/:id', async (req, res) => {
   try {
     const id = req.params.id
